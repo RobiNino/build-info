@@ -312,29 +312,6 @@ public class ArtifactoryBuildListener implements BuildListener {
         if (StringUtils.isNotBlank(parentBuildNumber)) {
             builder.parentNumber(parentBuildNumber);
         }
-        LicenseControl licenseControl = new LicenseControl(clientConf.info.licenseControl.isRunChecks());
-        String notificationRecipients = clientConf.info.licenseControl.getViolationRecipients();
-        if (StringUtils.isNotBlank(notificationRecipients)) {
-            licenseControl.setLicenseViolationsRecipientsList(notificationRecipients);
-        }
-        licenseControl.setIncludePublishedArtifacts(clientConf.info.licenseControl.isIncludePublishedArtifacts());
-        String scopes = clientConf.info.licenseControl.getScopes();
-        if (StringUtils.isNotBlank(scopes)) {
-            licenseControl.setScopesList(scopes);
-        }
-        licenseControl.setAutoDiscover(clientConf.info.licenseControl.isAutoDiscover());
-        builder.licenseControl(licenseControl);
-
-        final BlackDuckProperties blackDuckProperties;
-        if (clientConf.info.blackDuckProperties.isRunChecks()) {
-            blackDuckProperties = clientConf.info.blackDuckProperties.copyBlackDuckProperties();
-        } else {
-            blackDuckProperties = new BlackDuckProperties();
-        }
-
-        Governance governance = new Governance();
-        governance.setBlackDuckProperties(blackDuckProperties);
-        builder.governance(governance);
 
         String issueTrackerName = clientConf.info.issues.getIssueTrackerName();
         if (StringUtils.isNotBlank(issueTrackerName)) {

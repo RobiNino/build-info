@@ -56,10 +56,8 @@ public class BuildInfoBuilder {
     protected ConcurrentHashMap<String, Module> modules;
     protected List<PromotionStatus> statuses;
     protected Properties properties;
-    protected LicenseControl licenseControl;
     protected BuildRetention buildRetention;
     protected Issues issues;
-    protected Governance governance;
 
     public BuildInfoBuilder(String name) {
         this.name = name;
@@ -109,10 +107,8 @@ public class BuildInfoBuilder {
             build.setVcsUrl(vcsUrl);
         }
         build.setVcs(vcs);
-        build.setLicenseControl(licenseControl);
         build.setBuildRetention(buildRetention);
         build.setIssues(issues);
-        build.setGovernance(governance);
         return build;
     }
 
@@ -351,20 +347,9 @@ public class BuildInfoBuilder {
     }
 
     /**
-     * Sets the violation notifications of the build
-     *
-     * @param licenseControl Build violation  recipients.
-     * @return Builder instance
-     */
-    public BuildInfoBuilder licenseControl(LicenseControl licenseControl) {
-        this.licenseControl = licenseControl;
-        return this;
-    }
-
-    /**
      * Sets the post build retention period
      *
-     * @param buildRetention Build violation  recipients.
+     * @param buildRetention Build retention.
      * @return Builder instance
      */
     public BuildInfoBuilder buildRetention(BuildRetention buildRetention) {
@@ -444,11 +429,6 @@ public class BuildInfoBuilder {
 
     public BuildInfoBuilder issues(Issues issues) {
         this.issues = issues;
-        return this;
-    }
-
-    public BuildInfoBuilder governance(Governance governance) {
-        this.governance = governance;
         return this;
     }
 }

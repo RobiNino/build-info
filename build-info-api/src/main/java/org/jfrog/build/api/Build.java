@@ -69,8 +69,6 @@ public class Build extends BaseBuildBean {
     @Deprecated
     private String parentBuildId;
 
-    private LicenseControl licenseControl;
-
     private BuildRetention buildRetention;
 
     @XStreamAlias(RUN_PARAMETERS)
@@ -84,8 +82,6 @@ public class Build extends BaseBuildBean {
     private List<BuildDependency> buildDependencies;
 
     private Issues issues;
-
-    private Governance governance;
 
     /**
      * Formats the timestamp to the ISO date time string format expected by the build info API.
@@ -466,14 +462,6 @@ public class Build extends BaseBuildBean {
         return null;
     }
 
-    public LicenseControl getLicenseControl() {
-        return licenseControl;
-    }
-
-    public void setLicenseControl(LicenseControl licenseControl) {
-        this.licenseControl = licenseControl;
-    }
-
     public BuildRetention getBuildRetention() {
         return buildRetention;
     }
@@ -542,14 +530,6 @@ public class Build extends BaseBuildBean {
 
     public void setIssues(Issues issues) {
         this.issues = issues;
-    }
-
-    public Governance getGovernance() {
-        return governance;
-    }
-
-    public void setGovernance(Governance governance) {
-        this.governance = governance;
     }
 
     public void append(Build other) {
@@ -632,14 +612,12 @@ public class Build extends BaseBuildBean {
                 ", vcsRevision='" + vcsRevision + '\'' +
                 ", vcsUrl='" + vcsUrl + '\'' +
                 ", parentBuildId='" + parentBuildId + '\'' +
-                ", licenseControl=" + licenseControl +
                 ", buildRetention=" + buildRetention +
                 ", runParameters=" + runParameters +
                 ", modules=" + modules +
                 ", statuses=" + statuses +
                 ", buildDependencies=" + buildDependencies +
                 ", issues=" + issues +
-                ", governance=" + governance +
                 '}';
     }
 }

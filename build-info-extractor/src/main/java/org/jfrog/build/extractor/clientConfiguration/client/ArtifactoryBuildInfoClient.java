@@ -31,21 +31,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.*;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.jfrog.build.api.Build;
 import org.jfrog.build.api.BuildRetention;
-import org.jfrog.build.api.release.BintrayUploadInfoOverride;
 import org.jfrog.build.api.release.Distribution;
 import org.jfrog.build.api.release.Promotion;
 import org.jfrog.build.api.util.FileChecksumCalculator;
 import org.jfrog.build.api.util.Log;
 import org.jfrog.build.client.*;
-import org.jfrog.build.client.bintrayResponse.BintrayResponse;
-import org.jfrog.build.client.bintrayResponse.BintrayResponseFactory;
 import org.jfrog.build.extractor.clientConfiguration.deploy.DeployDetails;
 import org.jfrog.build.extractor.clientConfiguration.util.DeploymentUrlUtils;
 import org.jfrog.build.util.VersionCompatibilityType;
@@ -55,7 +51,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
@@ -70,7 +65,6 @@ public class ArtifactoryBuildInfoClient extends ArtifactoryBaseClient implements
     private static final String LOCAL_REPOS_REST_URL = "/api/repositories?type=local";
     private static final String REMOTE_REPOS_REST_URL = "/api/repositories?type=remote";
     private static final String VIRTUAL_REPOS_REST_URL = "/api/repositories?type=virtual";
-    private static final String PUSH_TO_BINTRAY_REST_URL = "/api/build/pushToBintray/";
     private static final String BUILD_REST_URL = "/api/build";
     private static final String BUILD_RETENTION_REST_URL = BUILD_REST_URL + "/retention/";
     private static final String BUILD_RETENTION_REST_ASYNC_PARAM = "?async=";
@@ -404,70 +398,6 @@ public class ArtifactoryBuildInfoClient extends ArtifactoryBaseClient implements
                     VersionCompatibilityType.INCOMPATIBLE);
         }
         return version;
-    }
-
-    /**
-     * Push build to bintray
-     *
-     * @param buildName         name of the build to push
-     * @param buildNumber       number of the build to push
-     * @param signMethod        flags if this artifacts should be signed or not
-     * @param passphrase        passphrase in case that the artifacts should be signed
-     * @param bintrayUploadInfo request body which contains the upload info
-     * @return http Response with the response outcome
-     * @throws IOException On any connection error
-     */
-    public BintrayResponse pushToBintray(String buildName, String buildNumber, String signMethod, String passphrase,
-                                         BintrayUploadInfoOverride bintrayUploadInfo) throws IOException, URISyntaxException {
-        if (StringUtils.isBlank(buildName)) {
-            throw new IllegalArgumentException("Build name is required for promotion.");
-        }
-        if (StringUtils.isBlank(buildNumber)) {
-            throw new IllegalArgumentException("Build number is required for promotion.");
-        }
-
-        String requestUrl = createRequestUrl(buildName, buildNumber, signMethod, passphrase);
-        String requestBody = createJsonRequestBody(bintrayUploadInfo);
-        HttpPost httpPost = new HttpPost(requestUrl);
-        StringEntity entity = new StringEntity(requestBody);
-        entity.setContentType("application/json");
-        httpPost.setEntity(entity);
-        HttpResponse response = httpClient.getHttpClient().execute(httpPost);
-        return parseResponse(response);
-    }
-
-    // create pushToBintray request Url
-    private String createRequestUrl(String buildName, String buildNumber, String signMethod, String passphrase) throws URISyntaxException {
-        URIBuilder urlBuilder = new URIBuilder();
-        urlBuilder.setPath(artifactoryUrl + PUSH_TO_BINTRAY_REST_URL + buildName + "/" + buildNumber);
-
-        if (StringUtils.isNotEmpty(passphrase)) {
-            urlBuilder.setParameter("gpgPassphrase", passphrase);
-        }
-        if (!StringUtils.equals(signMethod, "descriptor")) {
-            urlBuilder.setParameter("gpgSign", signMethod);
-        }
-        return urlBuilder.toString();
-    }
-
-    // create pushToBintray request body
-    private String createJsonRequestBody(BintrayUploadInfoOverride info) throws IOException {
-        String bintrayInfoJson;
-        if (!info.isValid()) {
-            // empty json body to use the descriptor file if exists
-            bintrayInfoJson = "{}";
-        } else {
-            bintrayInfoJson = toJsonString(info);
-        }
-        return bintrayInfoJson;
-    }
-
-    private BintrayResponse parseResponse(HttpResponse response) throws IOException {
-        InputStream content = response.getEntity().getContent();
-        int status = response.getStatusLine().getStatusCode();
-        JsonParser parser = httpClient.createJsonFactory().createJsonParser(content);
-        BintrayResponse responseObject = BintrayResponseFactory.createResponse(status, parser);
-        return responseObject;
     }
 
     public HttpResponse stageBuild(String buildName, String buildNumber, Promotion promotion) throws IOException {

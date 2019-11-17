@@ -269,17 +269,6 @@ public class BuildInfoMavenBuilder extends BuildInfoBuilder {
     }
 
     /**
-     * Sets the violation notifications of the build
-     *
-     * @param licenseControl Build violation  recipients.
-     * @return Builder instance
-     */
-    public BuildInfoMavenBuilder licenseControl(LicenseControl licenseControl) {
-        super.licenseControl(licenseControl);
-        return this;
-    }
-
-    /**
      * Sets the post build retention period
      *
      * @return Builder instance
@@ -327,11 +316,6 @@ public class BuildInfoMavenBuilder extends BuildInfoBuilder {
 
     public BuildInfoMavenBuilder issues(Issues issues) {
         super.issues(issues);
-        return this;
-    }
-
-    public BuildInfoMavenBuilder governance(Governance governance) {
-        super.governance(governance);
         return this;
     }
 

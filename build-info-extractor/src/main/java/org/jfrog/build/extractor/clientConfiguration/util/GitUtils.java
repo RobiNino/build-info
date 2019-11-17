@@ -4,7 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jfrog.build.api.Vcs;
 import org.jfrog.build.api.util.Log;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

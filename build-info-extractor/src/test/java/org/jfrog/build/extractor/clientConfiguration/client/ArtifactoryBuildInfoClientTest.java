@@ -65,7 +65,6 @@ public class ArtifactoryBuildInfoClientTest extends IntegrationTestsBase {
                 .parentName("baz")
                 .parentNumber("10")
                 .vcs(VCS)
-                .licenseControl(new LicenseControl(false))
                 .buildRetention(new BuildRetention(true))
                 .buildRunParameters(RUN_PARAMETERS)
                 .modules(Lists.newArrayList(module))

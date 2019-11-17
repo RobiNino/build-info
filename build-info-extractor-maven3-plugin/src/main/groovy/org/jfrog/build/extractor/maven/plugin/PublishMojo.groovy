@@ -14,7 +14,6 @@ import org.apache.maven.plugins.annotations.Parameter
 import org.apache.maven.project.MavenProject
 import org.codehaus.gmaven.mojo.GroovyMojo
 import org.gcontracts.annotations.Requires
-import org.jfrog.build.api.BuildInfoProperties
 import org.jfrog.build.extractor.maven.BuildInfoRecorder
 import org.jfrog.build.extractor.maven.BuildInfoRecorderLifecycleParticipant
 
@@ -84,13 +83,7 @@ class PublishMojo extends GroovyMojo
     Config.BuildInfo buildInfo = new Config.BuildInfo()
 
     @Parameter
-    Config.LicenseControl licenses  = new Config.LicenseControl()
-
-    @Parameter
     Config.IssuesTracker issues = new Config.IssuesTracker()
-
-    @Parameter
-    Config.BlackDuck blackDuck = new Config.BlackDuck()
 
     /**
      * Helper object
@@ -145,7 +138,6 @@ class PublishMojo extends GroovyMojo
         buildInfo.buildNumber       = helper.updateValue( buildInfo.buildNumber ) ?: buildInfo.buildTimestamp
         buildInfo.buildAgentName    = 'Maven'
         buildInfo.buildAgentVersion = helper.mavenVersion()
-        blackDuck.runChecks         = blackDuck.delegate.props.keySet().any { it.startsWith( BuildInfoProperties.BUILD_INFO_BLACK_DUCK_PROPERTIES_PREFIX )}
 
         if ( buildInfo.buildRetentionDays != null ){
             buildInfo.buildRetentionMinimumDate = buildInfo.buildRetentionDays as String

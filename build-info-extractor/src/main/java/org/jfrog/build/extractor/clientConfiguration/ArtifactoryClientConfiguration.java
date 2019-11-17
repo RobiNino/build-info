@@ -21,7 +21,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jfrog.build.api.*;
+import org.jfrog.build.api.Build;
+import org.jfrog.build.api.Issue;
 import org.jfrog.build.api.util.Log;
 import org.jfrog.build.extractor.clientConfiguration.util.IssuesTrackerUtils;
 
@@ -38,10 +39,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import static org.jfrog.build.api.BuildInfoConfigProperties.*;
 import static org.jfrog.build.api.BuildInfoFields.*;
-import static org.jfrog.build.api.BuildInfoProperties.*;
+import static org.jfrog.build.api.BuildInfoProperties.BUILD_INFO_ISSUES_TRACKER_PREFIX;
+import static org.jfrog.build.api.BuildInfoProperties.BUILD_INFO_PREFIX;
 import static org.jfrog.build.api.IssuesTrackerFields.*;
-import static org.jfrog.build.api.LicenseControlFields.AUTO_DISCOVER;
-import static org.jfrog.build.api.LicenseControlFields.VIOLATION_RECIPIENTS;
 import static org.jfrog.build.extractor.clientConfiguration.ClientConfigurationFields.*;
 import static org.jfrog.build.extractor.clientConfiguration.ClientProperties.*;
 /**
@@ -683,52 +683,6 @@ public class ArtifactoryClientConfiguration {
         }
     }
 
-    public class LicenseControlHandler extends PrefixPropertyHandler {
-        public LicenseControlHandler() {
-            super(root, BUILD_INFO_LICENSE_CONTROL_PREFIX);
-        }
-
-        public void setRunChecks(Boolean enabled) {
-            setBooleanValue(LicenseControlFields.RUN_CHECKS, enabled);
-        }
-
-        public Boolean isRunChecks() {
-            return getBooleanValue(LicenseControlFields.RUN_CHECKS, false);
-        }
-
-        public String getViolationRecipients() {
-            return getStringValue(VIOLATION_RECIPIENTS);
-        }
-
-        public void setViolationRecipients(String recipients) {
-            setStringValue(VIOLATION_RECIPIENTS, recipients);
-        }
-
-        public void setIncludePublishedArtifacts(Boolean enabled) {
-            setBooleanValue(LicenseControlFields.INCLUDE_PUBLISHED_ARTIFACTS, enabled);
-        }
-
-        public Boolean isIncludePublishedArtifacts() {
-            return getBooleanValue(LicenseControlFields.INCLUDE_PUBLISHED_ARTIFACTS, false);
-        }
-
-        public String getScopes() {
-            return getStringValue(LicenseControlFields.SCOPES);
-        }
-
-        public void setScopes(String scopes) {
-            setStringValue(LicenseControlFields.SCOPES, scopes);
-        }
-
-        public void setAutoDiscover(Boolean enabled) {
-            setBooleanValue(AUTO_DISCOVER, enabled);
-        }
-
-        public Boolean isAutoDiscover() {
-            return getBooleanValue(AUTO_DISCOVER, false);
-        }
-    }
-
     public class IssuesTrackerHandler extends PrefixPropertyHandler {
         public IssuesTrackerHandler() {
             super(root, BUILD_INFO_ISSUES_TRACKER_PREFIX);
@@ -779,95 +733,8 @@ public class ArtifactoryClientConfiguration {
         }
     }
 
-    public class BlackDuckPropertiesHandler extends PrefixPropertyHandler {
-        public BlackDuckPropertiesHandler() {
-            super(root, BUILD_INFO_BLACK_DUCK_PROPERTIES_PREFIX);
-        }
-
-        public boolean isRunChecks() {
-            return getBooleanValue(BlackDuckPropertiesFields.RUN_CHECKS, false);
-        }
-
-        public void setRunChecks(boolean blackDuckRunChecks) {
-            setBooleanValue(BlackDuckPropertiesFields.RUN_CHECKS, blackDuckRunChecks);
-        }
-
-        public String getAppName() {
-            return getStringValue(BlackDuckPropertiesFields.APP_NAME);
-        }
-
-        public void setAppName(String blackDuckAppName) {
-            setStringValue(BlackDuckPropertiesFields.APP_NAME, blackDuckAppName);
-        }
-
-        public String getAppVersion() {
-            return getStringValue(BlackDuckPropertiesFields.APP_VERSION);
-        }
-
-        public void setAppVersion(String blackDuckAppVersion) {
-            setStringValue(BlackDuckPropertiesFields.APP_VERSION, blackDuckAppVersion);
-        }
-
-        public String getReportRecipients() {
-            return getStringValue(BlackDuckPropertiesFields.REPORT_RECIPIENTS);
-        }
-
-        public void setReportRecipients(String reportRecipients) {
-            setStringValue(BlackDuckPropertiesFields.REPORT_RECIPIENTS, reportRecipients);
-        }
-
-        public String getScopes() {
-            return getStringValue(BlackDuckPropertiesFields.SCOPES);
-        }
-
-        public void setScopes(String scopes) {
-            setStringValue(BlackDuckPropertiesFields.SCOPES, scopes);
-        }
-
-        public boolean isIncludePublishedArtifacts() {
-            return getBooleanValue(BlackDuckPropertiesFields.INCLUDE_PUBLISHED_ARTIFACTS, Boolean.TRUE);
-        }
-
-        public void setIncludePublishedArtifacts(boolean includePublishedArtifacts) {
-            setBooleanValue(BlackDuckPropertiesFields.INCLUDE_PUBLISHED_ARTIFACTS, includePublishedArtifacts);
-        }
-
-        public boolean isAutoCreateMissingComponentRequests() {
-            return getBooleanValue(BlackDuckPropertiesFields.AutoCreateMissingComponentRequests, Boolean.TRUE);
-        }
-
-        public void setAutoCreateMissingComponentRequests(boolean autoCreateMissingComponentRequests) {
-            setBooleanValue(BlackDuckPropertiesFields.AutoCreateMissingComponentRequests,
-                    autoCreateMissingComponentRequests);
-        }
-
-        public boolean isAutoDiscardStaleComponentRequests() {
-            return getBooleanValue(BlackDuckPropertiesFields.AutoDiscardStaleComponentRequests, Boolean.TRUE);
-        }
-
-        public void setAutoDiscardStaleComponentRequests(boolean autoDiscardStaleComponentRequests) {
-            setBooleanValue(BlackDuckPropertiesFields.AutoDiscardStaleComponentRequests,
-                    autoDiscardStaleComponentRequests);
-        }
-
-        public BlackDuckProperties copyBlackDuckProperties() {
-            BlackDuckProperties blackDuckProperties = new BlackDuckProperties();
-            blackDuckProperties.setRunChecks(isRunChecks());
-            blackDuckProperties.setAppName(getAppName());
-            blackDuckProperties.setAppVersion(getAppVersion());
-            blackDuckProperties.setReportRecipients(getReportRecipients());
-            blackDuckProperties.setScopes(getScopes());
-            blackDuckProperties.setIncludePublishedArtifacts(isIncludePublishedArtifacts());
-            blackDuckProperties.setAutoCreateMissingComponentRequests(isAutoCreateMissingComponentRequests());
-            blackDuckProperties.setAutoDiscardStaleComponentRequests(isAutoDiscardStaleComponentRequests());
-            return blackDuckProperties;
-        }
-    }
-
     public class BuildInfoHandler extends PrefixPropertyHandler {
-        public final LicenseControlHandler licenseControl = new LicenseControlHandler();
         public final IssuesTrackerHandler issues = new IssuesTrackerHandler();
-        public final BlackDuckPropertiesHandler blackDuckProperties = new BlackDuckPropertiesHandler();
 
         private final Predicate<String> buildVariablesPredicate;
         private final Predicate<String> buildRunParametersPredicate;

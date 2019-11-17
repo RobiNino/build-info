@@ -64,13 +64,6 @@ To build the code without running the tests, add to the "clean build" command th
   "url" : "http://my-ci-server/jenkins/job/My-project-name/28/", // CI server URL
   "vcsRevision" : "e4ab2e493afd369ae7bdc90d69c912e8346a3463", // VCS revision
   "vcsUrl" : "https://github.com/github-user/my-project.git", // VCS URL
-  "licenseControl" : {	// Artifactory License Control information
-    "runChecks" : true,	// Artifactory will run automatic license scanning after the build is complete (true/false)
-    "includePublishedArtifacts" : true, // Should Artifactory run license checks on the build artifacts, in addition to the build dependecies (true/false) 
-    "autoDiscover" : true, // Should Artifactory auto discover licenses (true/false)
-    "scopesList" : "", // A space-separated list of dependency scopes/configurations to run license violation checks on. If left empty all dependencies from all scopes will be checked.
-    "licenseViolationsRecipientsList" : "" // Emails of recipients that should be notified of license violations in the build info (space-separated list)
-  },
   "buildRetention" : { // Build retention information
     "deleteBuildArtifacts" : true, // Automatically remove build artifacts stored in Artifactory (true/false)
     "count" : 100, // The maximum number of builds to store in Artifactory.
@@ -161,18 +154,6 @@ To build the code without running the tests, add to the "clean build" command th
       "aggregated" : true
     } ] 
   },  
-  "governance" : { // Black Duck Code Center integration information
-    "blackDuckProperties" : {
-      "appName" : "", // The Black Duck Code Center application name
-      "appVersion" : "", // The Black Duck Code Center application version
-      "reportRecipients" : "", // Recipients that should receive an email report once the automatic Black Duck Code Center compliance checks are completed (space-separated list)
-      "scopes" : "", // A list of dependency scopes/configurations to run Black Duck Code Center compliance checks on. If left empty all dependencies from all scopes will be checked  (space-separated list)
-      "runChecks" : true, // Should Black Duck Code Center run automatic compliance checks after the build is completed (true/false)
-      "includePublishedArtifacts" : true, // Include the build's published module artifacts in the Black Duck Code Center compliance checks if they are also used as dependencies for other modules in this build  (true/false)
-      "autoCreateMissingComponentRequests" : true, // Auto create missing components in Black Duck Code Center application after the build is completed and deployed in Artifactory (true/false)
-      "autoDiscardStaleComponentRequests" : true // Auto discard stale components in Black Duck Code Center application after the build is completed and deployed in Artifactory (true/false)
-    }
-  }
 }
 ```
 
@@ -271,61 +252,6 @@ To build the code without running the tests, add to the "clean build" command th
       "description": "VCS URL",
       "type": "string"
     },
-    "licenseControl": {
-      "description": "Artifactory License Control Information",
-      "type": "object",
-      "allOf": [
-        {
-          "properties": {
-            "runChecks": {
-              "description": "Run automatic license scanning after the build is complete",
-              "type": "boolean"
-            },
-            "includePublishedArtifacts": {
-              "description": "Run license checks on artifacts in addition to build dependencies",
-              "type": "boolean"
-            },
-            "autoDiscover": {
-              "description": "Artifactory should auto-discover license",
-              "type": "boolean"
-            },
-            "scopesList": {
-              "description": "Space-separated list of dependency scopes to run license violation checks",
-              "type": "string"
-            },
-            "licenseViolationRecipients": {},
-            "licenseViolationsRecipientsList": {}
-          },
-          "required": [ "runChecks", "includePublishedArtifacts", "autoDiscover", "scopesList" ],
-          "additionalProperties": false
-        },
-        {
-          "anyOf": [
-            {
-              "properties": {
-                "licenseViolationRecipients": {
-                  "description": "List of email addresses to be notified of license violations",
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "required": [ "licenseViolationRecipients" ]
-            },
-            {
-              "properties": {
-                "licenseViolationsRecipientsList": {
-                  "description": "Space-separated list of email addresses to be notified of license violations",
-                  "type": "string"
-                }
-              },
-              "required": [ "licenseViolationsRecipientsList" ]
-            }
-          ]
-        }
-      ]
-    },
     "buildRetention": {
       "description": "Build Retention Information",
       "type": "object",
@@ -373,7 +299,7 @@ To build the code without running the tests, add to the "clean build" command th
       ]
     },
     "modules": {
-      "description": "Artifactory License Control Information",
+      "description": "Modules included in the build",
       "type": "array",
       "items": {
         "type": "object",
@@ -497,53 +423,6 @@ To build the code without running the tests, add to the "clean build" command th
       "required": [ "tracker", "aggregateBuildIssues", "aggregationBuildStatus", "affectedIssues" ],
       "additionalProperties": false
     },
-    "governence": {
-      "description": "Black duck code center integration information",
-      "type": "object",
-      "properties": {
-        "blackDuckProperties": {
-          "type": "object",
-          "properties": {
-            "appName": {
-              "description": "The Black Duck Code Center application name",
-              "type": "string"
-            },
-            "appVersion": {
-              "description": "The Black Duck Code Center application version",
-              "type": "string"
-            },
-            "reportRecipients": {
-              "description": "Space-separated list of recipients that should receive an email report once the automatic Black Duck Code Center compliance checks are completed",
-              "type": "string"
-            },
-            "scopes": {
-              "description": "Space-separated list of dependency scopes/configurations to run Black Duck Code Center compliance checks on. If left empty all dependencies from all scopes will be checked",
-              "type": "string"
-            },
-            "runChecks": {
-              "description": "Should Black Duck Code Center run automatic compliance checks after the build is completed",
-              "type": "boolean"
-            },
-            "includePublishedArtifacts": {
-              "description": "Include the build's published module artifacts in the Black Duck Code Center compliance checks if they are also used as dependencies for other modules in this build",
-              "type": "boolean"
-            },
-            "autoCreateMissingComponentRequests": {
-              "description": "Auto create missing components in Black Duck Code Center application after the build is completed and deployed in Artifactory",
-              "type": "boolean"
-            },
-            "autoDiscardStaleComponentRequests": {
-              "description": "Auto discard stale components in Black Duck Code Center application after the build is completed and deployed in Artifactory",
-              "type": "boolean"
-            }
-          },
-          "required": [ "appName", "appVersion", "reportRecipients", "scopes", "runChecks", "includePublishedArtifacts", "autoCreateMissingComponentRequests", "autoDiscardStaleComponentRequests" ],
-          "additionalProperties": false
-        }
-      },
-      "required": [ "blackDuckProperties" ],
-      "additionalProperties": false
-    }
   },
   "required": [ "version", "name", "number", "type", "started", "durationMillis", "modules" ],
   "additionalProperties": false,

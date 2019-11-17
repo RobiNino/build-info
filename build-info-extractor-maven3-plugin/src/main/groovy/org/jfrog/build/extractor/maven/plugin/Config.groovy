@@ -40,21 +40,9 @@ class Config
         ArtifactoryClientConfiguration.BuildInfoHandler delegate = CLIENT_CONFIGURATION.info
     }
 
-    static class LicenseControl implements DelegatesToPrefixPropertyHandler
-    {
-        @Delegate
-        ArtifactoryClientConfiguration.LicenseControlHandler delegate = CLIENT_CONFIGURATION.info.licenseControl
-    }
-
     static class IssuesTracker implements DelegatesToPrefixPropertyHandler
     {
         @Delegate
         ArtifactoryClientConfiguration.IssuesTrackerHandler delegate = CLIENT_CONFIGURATION.info.issues
-    }
-
-    static class BlackDuck implements DelegatesToPrefixPropertyHandler
-    {
-        @Delegate
-        ArtifactoryClientConfiguration.BlackDuckPropertiesHandler delegate = CLIENT_CONFIGURATION.info.blackDuckProperties
     }
 }

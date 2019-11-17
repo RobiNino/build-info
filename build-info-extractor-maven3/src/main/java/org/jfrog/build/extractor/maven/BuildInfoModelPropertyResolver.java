@@ -71,26 +71,6 @@ public class BuildInfoModelPropertyResolver {
             agentVersion = buildAgent.getVersion();
         }
         builder.agent(new Agent(agentName, agentVersion));
-        LicenseControl licenseControl = new LicenseControl(clientConf.info.licenseControl.isRunChecks());
-        String notificationRecipients = clientConf.info.licenseControl.getViolationRecipients();
-        if (StringUtils.isNotBlank(notificationRecipients)) {
-            licenseControl.setLicenseViolationsRecipientsList(notificationRecipients);
-        }
-        licenseControl.setIncludePublishedArtifacts(clientConf.info.licenseControl.isIncludePublishedArtifacts());
-        licenseControl.setScopesList(clientConf.info.licenseControl.getScopes());
-        licenseControl.setAutoDiscover(clientConf.info.licenseControl.isAutoDiscover());
-        builder.licenseControl(licenseControl);
-
-        final BlackDuckProperties blackDuckProperties;
-        if (clientConf.info.blackDuckProperties.isRunChecks()) {
-            blackDuckProperties = clientConf.info.blackDuckProperties.copyBlackDuckProperties();
-        } else {
-            blackDuckProperties = new BlackDuckProperties();
-        }
-
-        Governance governance = new Governance();
-        governance.setBlackDuckProperties(blackDuckProperties);
-        builder.governance(governance);
         attachStagingIfNeeded(clientConf, builder);
         builder.artifactoryPrincipal(clientConf.publisher.getName());
 

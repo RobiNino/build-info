@@ -29,11 +29,7 @@ public interface BuildInfoProperties {
      * Prefix for properties that are dynamically added to build info
      */
     String BUILD_INFO_PROP_PREFIX = BUILD_INFO_PREFIX + "property.";
-    String BUILD_INFO_LICENSE_CONTROL_PREFIX = BUILD_INFO_PREFIX + "licenseControl.";
     String BUILD_INFO_ISSUES_TRACKER_PREFIX = BUILD_INFO_PREFIX + "issues.";
-
-    String BUILD_INFO_GOVERNANCE_PREFIX = BUILD_INFO_PREFIX + "governance.";
-    String BUILD_INFO_BLACK_DUCK_PROPERTIES_PREFIX = BUILD_INFO_GOVERNANCE_PREFIX + "blackduck.";
 
     /**
      * Prefix for build info properties that are coming from the CI server.
