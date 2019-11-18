@@ -143,7 +143,7 @@ public class ArtifactoryDependenciesClient extends ArtifactoryBaseClient {
      * @param responseStream response to read
      * @param valueType      response object type
      * @param <T>            response object type
-     * @return response object converted from HTTP Json reponse to the type specified.
+     * @return response object converted from HTTP Json response to the type specified.
      * @throws java.io.IOException if reading or converting response fails.
      */
     private <T> T readJsonResponse(InputStream responseStream, TypeReference<T> valueType, boolean ignoreMissingFields)

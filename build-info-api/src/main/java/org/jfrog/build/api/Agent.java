@@ -103,7 +103,7 @@ public class Agent implements Serializable {
     /**
      * Returns the display representation of the agent
      *
-     * @return AGENT_NAME/AGENT_VERISON
+     * @return AGENT_NAME/AGENT_VERSION
      */
     @Override
     public String toString() {

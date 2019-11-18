@@ -247,7 +247,7 @@ public class ArtifactoryHttpClient implements AutoCloseable {
     }
 
     /**
-     * @param entity the entity to retrive the message from.
+     * @param entity the entity to retrieve the message from.
      * @return response entity content.
      * @throws IOException
      */

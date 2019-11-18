@@ -130,7 +130,7 @@ public class ArtifactorySonatypeRepositoryListener extends AbstractRepositoryLis
     /**
      * The enforceArtifactoryResolver() method replaces the default artifact resolver instance with a resolver that enforces Artifactory
      * resolution repositories. However, since there's a chance that Maven started resolving a few artifacts before the instance replacement,
-     * thsi method makes sure those artifacts will be resolved from Artifactory as well.
+     * this method makes sure those artifacts will be resolved from Artifactory as well.
      * @param event
      */
     private void verifyArtifactoryResolutionEnforced(RepositoryEvent event) {
@@ -223,7 +223,7 @@ public class ArtifactorySonatypeRepositoryListener extends AbstractRepositoryLis
     }
 
     /**
-     * Enables both snapshot and release polocies for a repository
+     * Enables both snapshot and release policies for a repository
      */
     private void setRepositoryPolicy(RemoteRepository repo) throws NoSuchFieldException, IllegalAccessException {
         RepositoryPolicy policy = new RepositoryPolicy(true, RepositoryPolicy.UPDATE_POLICY_DAILY, RepositoryPolicy.CHECKSUM_POLICY_WARN);

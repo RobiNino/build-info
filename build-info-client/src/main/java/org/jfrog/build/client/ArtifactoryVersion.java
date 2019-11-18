@@ -48,12 +48,12 @@ public class ArtifactoryVersion implements Serializable {
 
                 int comparison = compareTokens(this.versionTokens[tokenIndex].trim(), atLeastToken);
 
-                //If the current token of this version is less than atLeasts current token
+                //If the current token of this version is less than atLeast's current token
                 if (comparison < 0) {
                     return false;
                 }
 
-                //If the current token of this version is greater than atLeasts current token
+                //If the current token of this version is greater than atLeast's current token
                 if (comparison > 0) {
                     return true;
                 }

@@ -447,7 +447,7 @@ public class BuildInfoRecorder extends AbstractExecutionListener implements Buil
     private void mergeProjectDependencies(Set<Artifact> projectDependencies) {
         // Go over all the artifacts taken from the MavenProject object, and replace their equals method, so that we are
         // able to merge them together with the artifacts inside the resolvedArtifacts set:
-        Set<Artifact> dependecies = Sets.newHashSet();
+        Set<Artifact> dependencies = Sets.newHashSet();
         for (Artifact artifact : projectDependencies) {
             String classifier = artifact.getClassifier();
             classifier = classifier == null ? "" : classifier;
@@ -457,7 +457,7 @@ public class BuildInfoRecorder extends AbstractExecutionListener implements Buil
                     scope, artifact.getType(), classifier, artifact.getArtifactHandler());
 
             art.setFile(artifact.getFile());
-            dependecies.add(art);
+            dependencies.add(art);
         }
 
         // Now we merge the artifacts from the two collections. In case an artifact is included in both collections, we'd like to keep
@@ -466,7 +466,7 @@ public class BuildInfoRecorder extends AbstractExecutionListener implements Buil
         Set<Artifact> moduleDependencies = currentModuleDependencies.get();
         Set<Artifact> tempSet = Sets.newHashSet(moduleDependencies);
         moduleDependencies.clear();
-        moduleDependencies.addAll(dependecies);
+        moduleDependencies.addAll(dependencies);
         moduleDependencies.addAll(tempSet);
         if (conf.publisher.isRecordAllDependencies()) {
             moduleDependencies.addAll(resolvedArtifacts);
