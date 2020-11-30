@@ -41,7 +41,7 @@ public class XrayViolationsTableHelper {
         // Print table headline.
         log.info(TABLE_HEADLINE);
         // Print column headers.
-        printLine(TABLE_HEADERS);
+        printLine(TABLE_HEADERS.toArray());
 
         // Print lines of violations by severity descending.
         for (int i = severities.length - 1; i >= 0; i--) {
