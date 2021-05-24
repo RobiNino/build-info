@@ -55,6 +55,9 @@ abstract class ArtifactoryPluginBase implements Plugin<Project> {
         if (isRootProject(project)) {
             addDeployTask(project)
             addDistributeBuildTask(project)
+
+            // Add a DependencyResolutionListener, to populate the dependency hierarchy map.
+            project.getGradle().addListener(artifactoryDependencyResolutionListener)
         } else {
             // Makes sure the plugin is applied in the root project
             project.rootProject.getPluginManager().apply(ArtifactoryPlugin.class)
@@ -66,8 +69,6 @@ abstract class ArtifactoryPluginBase implements Plugin<Project> {
         log.debug("Using Artifactory Plugin for ${project.path}")
 
         project.gradle.addProjectEvaluationListener(new ProjectsEvaluatedBuildListener())
-        // Add a DependencyResolutionListener, to populate the dependency hierarchy map.
-        project.getGradle().addListener(artifactoryDependencyResolutionListener)
     }
 
     protected abstract ArtifactoryTask createArtifactoryPublishTask(Project project)
