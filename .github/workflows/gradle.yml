@@ -43,7 +43,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
-          java-version: "8"
+          java-version: "11"
         if: ${{ env.SHOULD_NOT_PUBLISH != 'TRUE'}}
       - name: "Publish to Gradle Gallery"
         run: ./gradlew clean build -x test publishPlugins

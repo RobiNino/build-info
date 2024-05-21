@@ -11,7 +11,7 @@ Build Info is Artifactory's open integration layer for the CI servers and build 
 ## Building and testing the sources
 
 * The code is built using Gradle and includes integration tests.<br/>
-* It must run using JDK 8 and Gradle 5.6.2. If you are using different gradle version you can use the provided gradle wrapper.<br/>
+* It must run using JDK 11 and Gradle 5.6.2. If you are using different gradle version you can use the provided gradle wrapper.<br/>
 * In order to run tests the following environment variables must be set:
 ```bash
 export BITESTS_PLATFORM_URL='http://localhost:8081'
