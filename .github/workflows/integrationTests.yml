@@ -2,7 +2,7 @@ name: Integration Tests
 on:
   push:
     branches:
-      - master
+      - java11
   # Triggers the workflow on labeled PRs only.
   pull_request_target:
     types: [ labeled ]
