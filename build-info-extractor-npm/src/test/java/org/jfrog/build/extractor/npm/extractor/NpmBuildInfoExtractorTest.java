@@ -59,6 +59,13 @@ public class NpmBuildInfoExtractorTest extends IntegrationTestsBase {
     protected void init2() throws IOException {
         FileUtils.forceMkdir(tempWorkspace);
     }
+
+    public NpmBuildInfoExtractorTest() {
+        localRepo1 = getKeyWithTimestamp(NPM_LOCAL_REPO);
+        remoteRepo = "";
+        virtualRepo = "";
+    }
+
     @DataProvider
     private Object[][] getDependenciesMapFromBuildProvider() {
         return new Object[][]{
