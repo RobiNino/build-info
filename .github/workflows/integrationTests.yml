@@ -20,9 +20,14 @@ jobs:
         if: ${{github.event_name != 'push' }}
         with:
           labels: 'safe to test'
+      - name: Checkout PR head branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
   Distribution:
     needs: Pretest
-    name: Distribution (${{ matrix.os }})
+    name: Distribution (${{ matrix.os }}) - check!
     strategy:
       fail-fast: false
       matrix:
@@ -269,7 +274,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: clean build-info-extractor-maven3:test
- 
+
   npm:
     needs: Pretest
     name: npm (${{ matrix.os }}) - node ${{ matrix.node }}
